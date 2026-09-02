@@ -6,3 +6,8 @@ coverage/
 .DS_Store
 .env
 .env.*
+.npmrc
+*.log
+.idea/
+.direnv/
+.envrc

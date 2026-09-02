@@ -1,56 +1,123 @@
 # DSH Turn Colors
 
-`@geecraft23/dsh-turn-colors` is a small DeepSeek Harness Web plugin that makes long conversations easier to scan. A Turn's user-input bubble and completed final Assistant reply receive the same subtle background color, and the next Turn receives a different color.
+English | [简体中文](README.zh-CN.md)
 
-The palette contains six deterministic colors and repeats after six Turns. It includes separate light and dark theme values. Colors hug the message content instead of filling the entire transcript row.
+[![npm version](https://img.shields.io/npm/v/%40geecraft23%2Fdsh-turn-colors.svg)](https://www.npmjs.com/package/@geecraft23/dsh-turn-colors)
+[![CI](https://github.com/geecraft23/dsh-turn-colors/actions/workflows/ci.yml/badge.svg)](https://github.com/geecraft23/dsh-turn-colors/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+`@geecraft23/dsh-turn-colors` is an installable [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Bundle for the `web` Profile. It gives each conversation Turn a subtle, deterministic color shared by the durable user-input bubble and that Turn's completed final Assistant prose, while leaving system prompts, reasoning, tools, and message actions neutral.
+
+The six-color palette repeats by Turn number and provides separate light- and dark-theme values. Backgrounds hug the content instead of filling the transcript row.
+
+## What it colors
+
+| Colored | Kept neutral |
+| --- | --- |
+| Persisted user input | System prompts and injected context |
+| Admitted steering input | Intermediate Assistant text and reasoning |
+| The completed final Assistant prose for each Turn | Tool calls and results, Turn-process summaries, and images |
+| | Copy, branch, feedback, usage, time, status, and other message actions |
+| | Pending submission previews |
+
+The plugin makes no network requests and stores no conversation content.
 
 ## Requirements
 
 - Node.js `^22.19.0` or `>=24.0.0`
-- pnpm `11.7.0`
-- DeepSeek Harness with the `web` profile
+- pnpm on `PATH` for `dsh plugin`
+- `@deepseek-ai/dsh@0.1.2-alpha.5`
 
-## Try it locally
+The current release is tested with DeepSeek Harness `0.1.2-alpha.5` and Cordis `4.0.2`. DSH `0.1.1-rc.2` does not expose the chat markers this release needs, so the Registry install and launch commands below pin the compatible Harness version.
 
-Build the plugin from this directory:
+## Install
+
+Add the Bundle to the persistent `web` Profile once:
+
+```sh
+npx @deepseek-ai/dsh@0.1.2-alpha.5 plugin --profile web add @geecraft23/dsh-turn-colors
+```
+
+Then launch the same Profile:
+
+```sh
+npx @deepseek-ai/dsh@0.1.2-alpha.5 web
+```
+
+`dsh web` is shorthand for launching `dsh --profile web`. The package name is absent from the launch command because Bundle membership is stored in the Profile.
+
+## Verify
+
+First, inspect the composed configuration without starting the application:
+
+```sh
+npx @deepseek-ai/dsh@0.1.2-alpha.5 --profile web --dump-config
+```
+
+The output should contain a `# == @geecraft23/dsh-turn-colors` Bundle layer and an `id: turn-colors` plugin row. This proves composition, not browser execution.
+
+Next, run `web` and open the browser URL that DSH opens or prints. Complete at least two conversation Turns and confirm:
+
+- A Turn's user input and completed final answer share one color.
+- The next Turn uses a different color.
+- System, reasoning, tool, process, status, and action rows remain neutral.
+- The behavior remains readable in both light and dark themes.
+
+When using `--no-open`, open the complete URL printed on the `dsh web:` line, including its token.
+
+## How it works
+
+- **Bundle** — this npm package, added once to the `web` Profile with `dsh plugin`.
+- **Profile** — the user-owned, persistent, ordered composition; this plugin targets `web`.
+- **Cordis plugin** — the runtime module that Harness loads from the Bundle.
+- **Patch layer** — `cordis.patch.yml` inserts the `turn-colors` Cordis plugin row into the composed configuration. It is a DSH patch document, not JSON Patch, and does not rewrite the Profile's own patch file.
+
+The Host entry intentionally performs no UI work. Its `./client` entry installs one browser stylesheet, observes the rendered chat DOM, marks only eligible content, and removes all plugin-owned state when Cordis disposes it.
+
+## Local development
+
+```sh
+git clone https://github.com/geecraft23/dsh-turn-colors.git
+cd dsh-turn-colors
+pnpm install
+pnpm run check
+pnpm pack --dry-run
+```
+
+`pnpm run check` runs strict TypeScript checks, jsdom behavior tests, declaration generation, and runtime builds. The tests cover palette cycling, included and excluded surfaces, dynamic DOM changes, removal, cleanup, and light/dark CSS.
+
+From a separate, alpha.5-compatible DeepSeek Harness source checkout, prepare Harness once and then add the local project to `web`:
 
 ```sh
 pnpm install
-pnpm run check
-```
-
-From a DeepSeek Harness source checkout, add this directory to the built-in Web profile:
-
-```sh
-pnpm dsh plugin --profile web add /absolute/path/to/dsh-turn-colors
+pnpm run build
+pnpm dsh plugin --profile web add link:/absolute/path/to/dsh-turn-colors
 pnpm dsh --profile web --dump-config
-pnpm dsh web --no-open
+pnpm dsh web
 ```
 
-Open `http://127.0.0.1:3080`, then view a conversation containing at least two Turns. Restart the Web process after rebuilding or reinstalling the plugin.
+After a client-only code change, run `pnpm run check` in this project and refresh the browser. Restart Harness after changing Bundle membership, the patch layer, or Host-side runtime behavior.
 
-To remove the local plugin:
+## Limitations and compatibility
+
+- Web UI only (`dsh.client.platform` is `web`).
+- The six-color palette is fixed; there is no settings surface yet.
+- Pending drafts stay neutral until they belong to a persisted Turn.
+- Final Assistant prose receives its color after the Turn completes.
+- This release depends on current Harness chat DOM markers and the Assistant renderer structure. Harness is in developer preview, so a future UI change may require a plugin update.
+
+## Uninstall
 
 ```sh
-pnpm dsh plugin --profile web remove @geecraft23/dsh-turn-colors
+npx @deepseek-ai/dsh@0.1.2-alpha.5 plugin --profile web remove @geecraft23/dsh-turn-colors
 ```
 
-## How it is packaged
+Restart the Web process afterward. Removal deletes the dependency and Bundle layer from `web`; it does not modify conversation history.
 
-- `cordis.patch.yml` inserts the plugin into the selected DSH profile.
-- `lib/index.js` is the host-side no-op entry that keeps the Cordis plugin row active.
-- `lib/client.js` is the Web client module that observes rendered chat rows and applies the palette.
+## Contributing
 
-Run `pnpm pack --dry-run` to inspect the files that would be included in a package without publishing it.
-
-## Current scope
-
-- Web UI only.
-- Durable user messages, admitted steering messages, and completed final Assistant replies receive Turn colors.
-- System prompts, injected context, reasoning, tool calls, Turn-process summaries, copy/feedback/usage actions, and Turn status rows remain neutral.
-- Pending submission previews remain neutral because they do not yet belong to a persisted Turn.
-- The plugin uses the current Harness `data-chat-turn`, `data-chat-flow-kind`, and message-renderer DOM structure. A future Harness UI change to those markers may require a plugin update.
+Focused issues and pull requests are welcome. Before opening a pull request, run `pnpm run check` and include the tested DSH version. For visible behavior changes, include a screenshot or short recording.
 
 ## License
 
-MIT
+[MIT](LICENSE)

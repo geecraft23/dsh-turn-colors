@@ -1,0 +1,44 @@
+name: Bug report / 缺陷报告
+description: Report a reproducible problem with DSH Turn Colors / 报告可复现的问题
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve DSH Turn Colors. 感谢你帮助改进 DSH Turn Colors。
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DeepSeek Harness version / 版本
+      placeholder: 0.1.2-alpha.5
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version / 插件版本
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme / 主题
+      options:
+        - Light / 浅色
+        - Dark / 深色
+        - Both / 两者
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened? / 问题描述
+      description: Include the expected behavior and a minimal reproduction. / 请包含预期行为和最小复现步骤。
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or logs / 截图或日志
+      description: Remove tokens, API keys, and private conversation content before posting. / 提交前请移除 token、API Key 和私人对话内容。
