@@ -5,7 +5,7 @@ import { installTurnColors } from './turn-colors.js'
 export const name = 'dsh-turn-colors-client'
 
 /**
- * Color-code the rendered Chat rows for the lifetime of this Client plugin.
+ * Color-code eligible user and final-Assistant content for this Client plugin's lifetime.
  * @param ctx - Browser Cordis context that owns cleanup.
  */
 export function apply(ctx: Context): void {

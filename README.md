@@ -1,8 +1,8 @@
 # DSH Turn Colors
 
-`@geecraft23/dsh-turn-colors` is a small DeepSeek Harness Web plugin that makes long conversations easier to scan. Every rendered row belonging to the same conversation Turn receives the same subtle background color, and the next Turn receives a different color.
+`@geecraft23/dsh-turn-colors` is a small DeepSeek Harness Web plugin that makes long conversations easier to scan. A Turn's user-input bubble and completed final Assistant reply receive the same subtle background color, and the next Turn receives a different color.
 
-The palette contains six deterministic colors and repeats after six Turns. It includes separate light and dark theme values and does not change message text, spacing, or behavior.
+The palette contains six deterministic colors and repeats after six Turns. It includes separate light and dark theme values. Colors hug the message content instead of filling the entire transcript row.
 
 ## Requirements
 
@@ -46,8 +46,10 @@ Run `pnpm pack --dry-run` to inspect the files that would be included in a packa
 ## Current scope
 
 - Web UI only.
-- Pending user submissions, steering previews, and Turn status rows remain neutral because they do not yet belong to a persisted Turn.
-- The plugin uses the current Harness `data-chat-turn` DOM marker. A future Harness UI change to that marker may require a plugin update.
+- Durable user messages, admitted steering messages, and completed final Assistant replies receive Turn colors.
+- System prompts, injected context, reasoning, tool calls, Turn-process summaries, copy/feedback/usage actions, and Turn status rows remain neutral.
+- Pending submission previews remain neutral because they do not yet belong to a persisted Turn.
+- The plugin uses the current Harness `data-chat-turn`, `data-chat-flow-kind`, and message-renderer DOM structure. A future Harness UI change to those markers may require a plugin update.
 
 ## License
 

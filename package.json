@@ -1,7 +1,7 @@
 {
   "name": "@geecraft23/dsh-turn-colors",
   "version": "0.1.0",
-  "description": "Color-code DeepSeek Harness web chat rows by conversation turn.",
+  "description": "Color-code DeepSeek Harness user messages and final replies by conversation turn.",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/types/index.d.ts",
