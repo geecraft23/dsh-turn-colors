@@ -1,0 +1,67 @@
+{
+  "name": "@geecraft23/dsh-turn-colors",
+  "version": "0.1.0",
+  "description": "Color-code DeepSeek Harness web chat rows by conversation turn.",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "clean": "node --eval \"require('node:fs').rmSync('lib', { recursive: true, force: true })\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --environment jsdom",
+    "build:types": "tsc -p tsconfig.build.json",
+    "bundle": "tsdown",
+    "build": "pnpm run clean && pnpm run build:types && pnpm run bundle",
+    "check": "pnpm run typecheck && pnpm run test && pnpm run build",
+    "prepack": "pnpm run check"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "plugin",
+    "web-ui"
+  ],
+  "author": "geecraft23",
+  "license": "MIT",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.2",
+    "jsdom": "^30.0.1",
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
