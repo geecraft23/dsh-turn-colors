@@ -10,6 +10,16 @@ English | [简体中文](README.zh-CN.md)
 
 The six-color palette repeats by Turn number and provides separate light- and dark-theme values. Backgrounds hug the content instead of filling the transcript row.
 
+## Preview
+
+This preview was captured from `@geecraft23/dsh-turn-colors@0.1.0` installed through the public npm Registry. The image follows the viewer's light or dark color preference. Within each Turn, the user input and completed Assistant reply share one tint; the next Turn advances to another. System prompts, reasoning, and message actions remain neutral.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-light.png">
+  <img alt="DeepSeek Harness conversation with matching Turn colors on each user input and completed Assistant reply." src="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-light.png">
+</picture>
+
 ## What it colors
 
 | Colored | Kept neutral |

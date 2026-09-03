@@ -10,6 +10,16 @@
 
 调色板包含六种颜色，按 Turn 编号循环，并分别适配浅色与深色主题。背景只贴合内容区域，不会铺满整行对话。
 
+## 效果预览
+
+这组预览来自通过公共 npm Registry 安装的 `@geecraft23/dsh-turn-colors@0.1.0`。图片会随浏览者的浅色或深色偏好切换。同一 Turn 的用户输入与完成后的 Assistant 回复使用同一种颜色；下一个 Turn 会切换到另一种颜色。系统提示词、推理过程和消息操作区保持中性。
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-light.png">
+  <img alt="DeepSeek Harness 对话界面：每个用户输入与完成后的 Assistant 回复使用相同的 Turn 颜色。" src="https://raw.githubusercontent.com/geecraft23/dsh-turn-colors/main/docs/assets/turn-colors-light.png">
+</picture>
+
 ## 着色范围
 
 | 着色 | 保持中性 |
